@@ -8,9 +8,11 @@ import java.util.Optional;
 
 @Repository
 public interface CyclistRepository extends JpaRepository<Cyclist,String> {
-    Optional<Cyclist> findByEmail(String userEmail);
-    Optional<Cyclist> findById(String userId);
 
-    Cyclist save(Cyclist cyclist);
+    // genera automáticamente estas busquedas
+    Optional<Cyclist> findByuserEmail(String userEmail);
+    Optional<Cyclist> findByuserId(String userId);
+
+    // S save(Cyclist cyclist);
 
 }

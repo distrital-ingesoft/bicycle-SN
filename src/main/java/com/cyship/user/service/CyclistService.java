@@ -12,16 +12,19 @@ import java.util.Optional;
 
 @Service
 public class CyclistService {
+
     @Autowired
     CyclistRepository repository;
+    
     @Autowired
     ProfileRepository profileRepository;
+    
     public Cyclist createAccount(Cyclist user) throws Exception {
         if(!repository.findById(user.getUserId()).isEmpty()){
             throw new Exception("El nombre de usuario ya se encuentra registrado");
         }
 
-        if(!repository.findByEmail(user.getUserEmail()).isEmpty()){
+        if(!repository.findByuserEmail(user.getUserEmail()).isEmpty()){
             throw new Exception("El nombre de usuario ya se encuentra registrado");
         }
         repository.save(user);

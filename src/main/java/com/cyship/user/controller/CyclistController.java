@@ -54,6 +54,8 @@ public class CyclistController {
             return ;
         }
     }
+    
+    /*
     @PostMapping("/user/{userId}/profile/add/{targetUserId}")
     void acceptFriend(@PathVariable String userId,  @PathVariable String targetUserId){
         try {
@@ -62,4 +64,5 @@ public class CyclistController {
             return ;
         }
     }
+    */
 }
