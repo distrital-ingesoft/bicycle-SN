@@ -21,6 +21,7 @@ public class CyclistController {
             return null;
         }
     }
+    
     @PostMapping("/user/{userId}/profile")
     Profile updateProfile(@RequestBody Profile profile, @PathVariable String userId){
         try {
