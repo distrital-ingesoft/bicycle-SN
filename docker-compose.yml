@@ -31,3 +31,20 @@ services:
       - 8081:80
     environment:
       - PMA_HOST=db
+
+  # Gitbook
+  gitbook:
+    image: gitbook
+    build: 
+      context: .gitbook
+      dockerfile: Dockerfile
+    container_name: gitbook
+    volumes:
+      - ./docs:/docs
+    ports:
+      - 4000:4000
+      - 35729:35729
+    expose:
+      - 4000 
+    entrypoint: "tail -f /dev/null" 
+    restart: always  
