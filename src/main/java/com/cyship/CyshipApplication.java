@@ -1,0 +1,13 @@
+package com.cyship;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class CyshipApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(CyshipApplication.class, args);
+	}
+
+}

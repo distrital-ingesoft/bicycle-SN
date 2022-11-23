@@ -1,0 +1,27 @@
+version: '3.3'
+
+# servicios a ejecutar
+services:
+
+  # MySQL con nombre `tareas-db`
+  db:
+    image: mysql:8.0.31
+    container_name: cyship-db
+    environment:
+      - MYSQL_DATABASE=cyship
+      - MYSQL_USER=cyship
+      - MYSQL_PASSWORD=secret
+      - MYSQL_ROOT_PASSWORD=secret
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    # MySQLAdmin
+  phpmyadmin:
+      image: phpmyadmin
+      container_name: phpmyadmin
+      restart: always
+      ports:
+        - 8081:80
+      environment:
+        - PMA_HOST=db
