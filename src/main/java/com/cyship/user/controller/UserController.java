@@ -6,6 +6,8 @@ import com.cyship.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class UserController {
 
@@ -29,8 +31,24 @@ public class UserController {
             return null;
         }
     }
-    /*
-    @GetMapping("/user/profile/{keywords}")
+
+    @GetMapping("/users")
+    List<User> getUsers(){
+        return service.getAll();
+    }
+
+    @GetMapping("/user")
+    List<String> consultProfile(@RequestParam String keywords){
+        try {
+           return service.findProfiles(keywords);
+
+        }catch(Exception e){
+            return null;
+        }
+    }
+
+/*
+    @GetMapping("/users")
     List<Profile> consultProfiles(@PathVariable String keywords){
         try {
             return service.findProfiles(keywords);
@@ -38,6 +56,7 @@ public class UserController {
             return null;
         }
     }
+
     @PostMapping("/user/{userId}/profile/follow/{targetUserId}")
     void follow(@PathVariable String userId,  @PathVariable String targetUserId){
         try {

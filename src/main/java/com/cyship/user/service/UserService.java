@@ -44,9 +44,10 @@ public class UserService {
 
     }
 
-    public List<Profile> findProfiles(String keywords) {
+    public List<String> findProfiles(String keywords) {
         return profileRepository.findByKeyword(keywords);
     }
+
 
     public void follow(String userId, String targetUserId) throws Exception {
         Optional<User> userOpt = repository.findById(userId);
@@ -69,4 +70,7 @@ public class UserService {
     }
 
 
+    public List<User> getAll() {
+        return repository.findAll();
+    }
 }
