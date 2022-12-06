@@ -10,7 +10,6 @@ import java.sql.Date;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Entity
-
 public class Profile {
     @Id @GeneratedValue
     Integer profileId;
@@ -19,7 +18,6 @@ public class Profile {
     Date birthDate;
     String country;
     String city;
-    String password;
     String avatar;
     String training;
     Integer accountType;

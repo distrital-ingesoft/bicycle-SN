@@ -24,6 +24,8 @@ public class User {
     @OneToOne(fetch = FetchType.LAZY,cascade=CascadeType.ALL)
     Profile profile;
 
+//    String password;
+
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY)
     List<User> locks;

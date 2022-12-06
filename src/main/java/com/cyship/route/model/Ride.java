@@ -26,6 +26,6 @@ public class Ride {
     @OneToMany(fetch = FetchType.LAZY)
     List<Award> awards;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     Route route;
 }

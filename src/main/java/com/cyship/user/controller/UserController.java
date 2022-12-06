@@ -1,5 +1,6 @@
 package com.cyship.user.controller;
 
+import com.cyship.user.dto.ProfileRelationship;
 import com.cyship.user.model.User;
 import com.cyship.user.model.Profile;
 import com.cyship.user.service.UserService;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class UserController {
@@ -23,6 +25,17 @@ public class UserController {
         }
     }
 
+    @GetMapping("/user")
+    List<String> getUsers(@RequestParam(required = false) String keyword){
+        try {
+            return(keyword == null || keyword .length()==0)?
+                    service.getAll().stream().map(user -> user.getUserId()).collect(Collectors.toList()):
+                    service.findProfiles(keyword);
+        }catch(Exception e){
+            return null;
+        }
+    }
+
     @PostMapping("/user/{userId}/profile")
     Profile updateProfile(@RequestBody Profile profile, @PathVariable String userId){
         try {
@@ -32,26 +45,10 @@ public class UserController {
         }
     }
 
-    @GetMapping("/users")
-    List<User> getUsers(){
-        return service.getAll();
-    }
-
-    @GetMapping("/user")
-    List<String> consultProfile(@RequestParam String keywords){
+    @GetMapping("/user/{userId}/profile")
+    Profile consultProfiles(@PathVariable String userId){
         try {
-           return service.findProfiles(keywords);
-
-        }catch(Exception e){
-            return null;
-        }
-    }
-
-/*
-    @GetMapping("/users")
-    List<Profile> consultProfiles(@PathVariable String keywords){
-        try {
-            return service.findProfiles(keywords);
+            return service.getProfile(userId);
         }catch(Exception e){
             return null;
         }
@@ -65,23 +62,20 @@ public class UserController {
             return ;
         }
     }
-
-    @PostMapping("/user/{userId}/profile/add/{targetUserId}")
-    void addFriend(@PathVariable String userId,  @PathVariable String targetUserId){
+    @PostMapping("/friendship")
+    void addFriend(@RequestBody ProfileRelationship relationship){
         try {
-            service.addFriend(userId, targetUserId);
+            service.requestFriendship(relationship.getSourceAccount(), relationship.getTargetAccount());
         }catch(Exception e){
             return ;
         }
     }
-    @PostMapping("/user/{userId}/profile/add/{targetUserId}")
-    void acceptFriend(@PathVariable String userId,  @PathVariable String targetUserId){
+    @PutMapping("/friendship")
+    void acceptFriend(@RequestBody ProfileRelationship relationship){
         try {
-            service.addFriend(userId, targetUserId);
+            service.acceptFriendship(relationship.getSourceAccount(), relationship.getTargetAccount());
         }catch(Exception e){
             return ;
         }
     }
-
- */
 }

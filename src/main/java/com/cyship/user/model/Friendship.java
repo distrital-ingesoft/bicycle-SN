@@ -6,10 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @NoArgsConstructor
@@ -29,4 +26,9 @@ public class Friendship {
 
     Boolean accepted;
 
+    public Friendship(User requester, User recipient){
+        this.requester = requester;
+        this. recipient = recipient;
+        accepted = false;
+    }
 }
