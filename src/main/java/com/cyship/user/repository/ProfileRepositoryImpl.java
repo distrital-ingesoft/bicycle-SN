@@ -8,7 +8,9 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NamedQuery;
 import javax.persistence.Query;
+import java.sql.SQLOutput;
 import java.util.List;
 
 @Component
@@ -21,13 +23,21 @@ public class ProfileRepositoryImpl   {
     EntityManager em;
 
     public List<String> findByKeyword(String keyword) {
-        String query = "SELECT DISTINCT u.id "+
-            "FROM User u, Profile p "+
-            "WHERE u.userId like ?1 OR u.email like ?1 OR "+
-            "(u.profile = p and  (p.firstName like ?1 or p.lastName like ?1 )) ";
-        Query queryJpa =  em.createQuery(query);
-        queryJpa.setParameter(1, "%" + keyword + "%");
-        return queryJpa.getResultList();
+        System.out.println("Flag 3");
+        try {
+            String query = "SELECT DISTINCT u.id "+
+                    "FROM User u, Profile p "+
+                    "WHERE u.userId like ?1 OR u.email like ?1 OR "+
+                    "(u.profile = p and  (p.firstName like ?1 or p.lastName like ?1 )) ";
+            Query queryJpa =  em.createQuery(query);
+            queryJpa.setParameter(1, "%" + keyword + "%");
+            System.out.println("Return + " + queryJpa.getResultList().size());
+            return queryJpa.getResultList();
+        }catch (Exception e){
+            System.out.println(e);
+            return null;
+        }
+
     }
 
 

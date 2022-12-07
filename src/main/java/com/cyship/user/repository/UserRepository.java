@@ -2,6 +2,7 @@ package com.cyship.user.repository;
 
 import com.cyship.user.model.User;
 import com.cyship.user.model.Friendship;
+import com.cyship.wall.model.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -28,4 +29,9 @@ public interface UserRepository extends JpaRepository<User,String> {
 
     @Query("select c from User c where c.userId = ?1")
     public List<User> findAmigos(String userId);
+
+    @Query(
+            "select c.myPosts from User c where c.userId = ?1"
+    )
+    public List<Post> findPosts(String userId);
 }

@@ -1,5 +1,6 @@
 package com.cyship.user.model;
 
+import com.cyship.wall.model.Post;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -49,5 +50,14 @@ public class User {
             orphanRemoval = true
     )
     List<Friendship> receivedFriendships = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany (
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
+    List<Post> myPosts = new ArrayList<>();
+
 
 }

@@ -1,10 +1,12 @@
 package com.cyship.wall.model;
 
+import com.cyship.user.model.User;
 import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.List;
+import java.time.LocalTime;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -15,10 +17,24 @@ import java.util.List;
 public class Post {
 
     @Id
-    @GeneratedValue
-
-    String name;
-    Date hour;
+    String postId;
+    String title;
+    LocalTime hour;
     Date date;
     String message;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    User user;
+
+    public Post (String msg, User u, String t, long pId){
+        message= msg;
+        title = t;
+        user = u;
+        date = Date.valueOf(java.time.LocalDate.now());
+        hour = java.time.LocalTime.now();
+        postId = String.valueOf(pId);
+        System.out.println(
+                "Post creado: " +title +" - "+ message + " - " + u.getUserId()
+        );
+    }
 }

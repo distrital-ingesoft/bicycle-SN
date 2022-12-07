@@ -7,6 +7,7 @@ import com.cyship.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,7 +17,7 @@ public class UserController {
     @Autowired
     UserService service;
 
-    @PostMapping("/user")
+    @PostMapping(value = "/user", consumes = {"application/json"})
     User createAccount(@RequestBody User user){
         try {
             return service.createAccount(user);
