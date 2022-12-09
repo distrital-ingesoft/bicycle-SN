@@ -2,9 +2,7 @@ package com.cyship.sponsor.model;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -14,10 +12,12 @@ import javax.persistence.Id;
 @Entity
 public class Award {
     @Id
-    @GeneratedValue
     String id;
-    Integer type;
-    Sponsor sponsor;
+    String type;
     Integer quantity;
     String description;
+    @ManyToOne
+    @JoinColumn(name = "sponsor_id")
+    Sponsor sponsor;
+
 }

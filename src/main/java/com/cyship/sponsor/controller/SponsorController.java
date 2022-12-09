@@ -5,10 +5,10 @@ import com.cyship.sponsor.model.Sponsor;
 import com.cyship.sponsor.service.AwardService;
 import com.cyship.sponsor.service.SponsorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class SponsorController {
@@ -16,10 +16,21 @@ public class SponsorController {
     SponsorService service;
 
     @PostMapping(value = "/sponsor/{userId}")
-    Award createSponsor(@RequestBody Sponsor sponsor, @PathVariable String userId){
+    Sponsor createSponsor(@RequestBody Sponsor sponsor, @PathVariable String userId){
         try {
-            return service.createSponsor(userId, sponsor.getName());
+            return service.createSponsor(userId, sponsor);
         }catch(Exception e){
+            return null;
+        }
+    }
+    @GetMapping(value = "/sponsor")
+    List<Sponsor> showSponsors(@RequestParam(required = false) String keyword){
+        try {
+            return(keyword == null || keyword .length()==0)?
+                    service.getAll():
+                    service.findSponsors(keyword);
+        }
+        catch (Exception e){
             return null;
         }
     }

@@ -26,22 +26,23 @@ public class PostService {
     @Autowired
     PostRepositoryImpl repositoryImpl;
 
-    public Post createPost(String userId, String message, String tittle) throws Exception{
+    public Post createPost(String userId, Post post) throws Exception{
         if(usrRepository.findById(userId).isEmpty()){
             throw new Exception("Usuario no encontrado");
         }
-        if(message == null){
+        if(post.getMessage() == null || post.getTitle() == null){
             throw new Exception("Post sin mensaje");
         }
         User temp = usrRepository.findById(userId).get();
         long cant = repository.count() + 1;
-        Post p = new Post(message,temp,tittle, cant);
+        post.setUser(temp);
+        post.setPostId(String.valueOf(cant));
         try {
-            repository.save(p);
+            repository.save(post);
         }catch (Exception e){
             System.out.println(e);
         }
-        return p;
+        return post;
     }
 
     public Post getPost(String postId) throws Exception{
@@ -73,7 +74,6 @@ public class PostService {
         for(int x = 0 ; x<users.size(); x++){
             posts.add(getPost(users.get(x)));
         }
-        System.out.println("Post listos para enviar");
 
         return posts;
     }

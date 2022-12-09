@@ -16,25 +16,16 @@ public class PostController {
     @Autowired
     PostService service;
 
-    /**
-     * Metodo para añadir un nuevo post
-     * @param post Información del post
-     * @param userId Id del usuario que lo publicará
-     * @return
-     */
+
     @PostMapping(value = "/post/{userId}", consumes = {"application/json"})
     Post createPost(@RequestBody Post post, @PathVariable String userId){
         try {
-            return service.createPost(userId, post.getMessage(), post.getTitle());
+            return service.createPost(userId, post);
         }catch(Exception e){
             return null;
         }
     }
 
-    /**
-     * Con este método podemos ver todos los post hecho en general
-     * @return
-     */
     @GetMapping("/post")
     List<Post> getPosts(@RequestParam(required = false) String keyword){
         try {

@@ -26,15 +26,5 @@ public class Post {
     @JoinColumn(name = "user_id")
     User user;
 
-    public Post (String msg, User u, String t, long pId){
-        message= msg;
-        title = t;
-        user = u;
-        date = Date.valueOf(java.time.LocalDate.now());
-        hour = java.time.LocalTime.now();
-        postId = String.valueOf(pId);
-        System.out.println(
-                "Post creado: " +title +" - "+ message + " - " + u.getUserId()
-        );
-    }
+
 }
