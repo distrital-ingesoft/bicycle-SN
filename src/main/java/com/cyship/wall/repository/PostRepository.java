@@ -1,5 +1,6 @@
 package com.cyship.wall.repository;
 
+import com.cyship.user.model.User;
 import com.cyship.wall.model.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,6 +16,5 @@ public interface PostRepository extends JpaRepository<Post,String> {
 
     Post save(Post post);
 
-
-
+    List<Post> findByUser(User usr);
 }

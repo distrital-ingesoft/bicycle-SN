@@ -58,7 +58,6 @@ public class UserService {
     }
 
     public List<String> findProfiles(String keywords) {
-        System.out.println("Flag 2");
         return profileRepository.findByKeyword(keywords);
     }
 

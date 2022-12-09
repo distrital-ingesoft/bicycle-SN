@@ -4,12 +4,15 @@ import com.cyship.user.model.User;
 import com.cyship.user.repository.UserRepository;
 import com.cyship.wall.model.Post;
 import com.cyship.wall.repository.PostRepository;
+import com.cyship.wall.repository.PostRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.SimpleTimeZone;
 
 @Service
 @Transactional
@@ -20,6 +23,9 @@ public class PostService {
 
     @Autowired
     UserRepository usrRepository;
+
+    @Autowired
+    PostRepositoryImpl repositoryImpl;
 
     public Post createPost(String userId, String message, String tittle) throws Exception{
         if(usrRepository.findById(userId).isEmpty()){
@@ -34,10 +40,8 @@ public class PostService {
         try {
             repository.save(p);
         }catch (Exception e){
-            System.out.println("");
             System.out.println(e);
         }
-        System.out.println("Usuario guardado");
         return p;
     }
 
@@ -54,6 +58,24 @@ public class PostService {
         return repository.findAll();
     }
 
+    public List<Post> getUserPost(String userId) throws Exception{
+        if(usrRepository.findById(userId).isEmpty()){
+            throw new Exception("Usuario no encontrado");
+        }
+        User temp = usrRepository.findById(userId).get();
+        return repository.findByUser(temp);
+    }
 
 
+    public List<Post> findPosts(String keyword) throws Exception {
+        List<String> users = repositoryImpl.findByKeyword(keyword);
+        List<Post> posts = new ArrayList<>();
+        System.out.println("Post recuperados" + users.size());
+        for(int x = 0 ; x<users.size(); x++){
+            posts.add(getPost(users.get(x)));
+        }
+        System.out.println("Post listos para enviar");
+
+        return posts;
+    }
 }

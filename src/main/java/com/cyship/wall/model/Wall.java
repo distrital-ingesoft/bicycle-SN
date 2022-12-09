@@ -14,8 +14,8 @@ import java.util.List;
 public class Wall {
     @Id
     @GeneratedValue
-
     Integer id;
+    String userId;
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     List<Post> posts;
 }

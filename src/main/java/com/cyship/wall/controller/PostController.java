@@ -16,22 +16,49 @@ public class PostController {
     @Autowired
     PostService service;
 
+    /**
+     * Metodo para añadir un nuevo post
+     * @param post Información del post
+     * @param userId Id del usuario que lo publicará
+     * @return
+     */
     @PostMapping(value = "/post/{userId}", consumes = {"application/json"})
     Post createPost(@RequestBody Post post, @PathVariable String userId){
-        System.out.println("ENTRO");
         try {
             return service.createPost(userId, post.getMessage(), post.getTitle());
         }catch(Exception e){
             return null;
         }
     }
-    @GetMapping("/posts")
-    List<String> getPosts(){
+
+    /**
+     * Con este método podemos ver todos los post hecho en general
+     * @return
+     */
+    @GetMapping("/post")
+    List<Post> getPosts(@RequestParam(required = false) String keyword){
         try {
-            return service.getAll().stream().map(post -> post.getMessage()).collect(Collectors.toList());
+            return(keyword == null || keyword .length()==0)?
+                    service.getAll():
+                    service.findPosts(keyword);
         }catch(Exception e){
             return null;
         }
     }
+
+    /**
+     * Este metodo muestra los post del usuario.
+     * @param userId Id del usuario a mostrar el post
+     * @return
+     */
+    @GetMapping("/wall/{userId}")
+    List<Post> getWall(@PathVariable String userId){
+        try {
+            return service.getUserPost(userId);
+        }catch(Exception e){
+            return null;
+        }
+    }
+
 
 }
