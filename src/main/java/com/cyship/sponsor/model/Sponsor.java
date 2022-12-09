@@ -1,11 +1,9 @@
 package com.cyship.sponsor.model;
 
+import com.cyship.user.model.User;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
 @Getter
@@ -18,8 +16,15 @@ import java.util.List;
 public class Sponsor {
     @Id
     String id;
-    Integer type;
-
+    String type;
+    @OneToOne
+    User user;
+    String name;
     @OneToMany(fetch = FetchType.LAZY)
     List<Award> awards;
+
+    public Sponsor(String name, User u){
+
+
+    }
 }

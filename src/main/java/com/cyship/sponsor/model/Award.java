@@ -17,6 +17,7 @@ public class Award {
     @GeneratedValue
     String id;
     Integer type;
+    Sponsor sponsor;
     Integer quantity;
     String description;
 }
