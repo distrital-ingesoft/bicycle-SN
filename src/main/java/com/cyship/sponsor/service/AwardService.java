@@ -5,6 +5,8 @@ import com.cyship.sponsor.model.Sponsor;
 import com.cyship.sponsor.repository.AwardRepository;
 import com.cyship.sponsor.repository.AwardRepositoryImpl;
 import com.cyship.sponsor.repository.SponsorRepository;
+import com.cyship.user.model.User;
+import com.cyship.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +22,10 @@ public class AwardService {
     AwardRepository repository;
     @Autowired
     SponsorRepository sponsorRepository;
-
     @Autowired
     AwardRepositoryImpl repositoryImp;
+    @Autowired
+    UserRepository userRepository;
 
     public Award createAward(String sponsorId, Award award) throws Exception {
         if(sponsorRepository.findById(sponsorId).isEmpty()) {
@@ -89,6 +92,21 @@ public class AwardService {
         }catch (Exception e){
             return false;
         }
+
+    }
+
+    public Award claimAward(String userId, String awardId) throws Exception {
+        Optional<User> usrOp = userRepository.findById(userId);
+        Award op = getAward(awardId);
+        if(usrOp.isEmpty()){
+            throw new Exception("El usuario no se encontro");
+        }
+        if(op.getQuantity()<1){
+            throw new Exception("Cantidad del premio menor a 0");
+        }
+        op.setQuantity(op.getQuantity() - 1);
+        repository.save(op);
+        return op;
 
     }
 }

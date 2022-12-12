@@ -2,9 +2,7 @@ package com.cyship.user.model;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -14,11 +12,13 @@ import javax.persistence.Id;
 @Entity
 public class Bike {
     @Id
-    @GeneratedValue
-    Integer id;
+    String id;
     Integer type;
-    Integer color;
-    String Image;
-    String Characteristics;
+    String color;
+    String image;
+    String characteristics;
     Integer state;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    User user;
 }

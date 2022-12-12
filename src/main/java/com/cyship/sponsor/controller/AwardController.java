@@ -42,4 +42,9 @@ public class AwardController {
     boolean deleteAward(@PathVariable String awardId) throws Exception {
         return service.deleteAward(awardId);
     }
+
+    @PutMapping(value = "/claimAward/{userId}/{awardId}")
+    Award claimAward(@PathVariable String userId, @PathVariable String awardId) throws Exception {
+        return service.claimAward(userId,awardId);
+    }
 }
