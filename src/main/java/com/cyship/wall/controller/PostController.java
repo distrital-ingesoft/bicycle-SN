@@ -5,6 +5,7 @@ import com.cyship.user.model.User;
 import com.cyship.wall.model.Post;
 import com.cyship.wall.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,7 +17,12 @@ public class PostController {
     @Autowired
     PostService service;
 
-
+    /**
+     * Metodo para crear post
+     * @param post Detalles del post a crear
+     * @param userId Id del usuario que lo creará
+     * @return
+     */
     @PostMapping(value = "/post/{userId}", consumes = {"application/json"})
     Post createPost(@RequestBody Post post, @PathVariable String userId){
         try {
@@ -25,6 +31,12 @@ public class PostController {
             return null;
         }
     }
+
+    /**
+     * Metodo para ver el listado de posts, ya sea con una Keyword para filtrar o mostrando todos en caso contrario
+     * @param keyword Palabra por la cual se filtrará
+     * @return
+     */
 
     @GetMapping("/post")
     List<Post> getPosts(@RequestParam(required = false) String keyword){
@@ -50,6 +62,19 @@ public class PostController {
             return null;
         }
     }
+    @GetMapping("post/{postId}")
+    Post getPost(@PathVariable String postId) throws Exception {
+        return service.getPost(postId);
+    }
 
+    @PutMapping("/post/{postId}")
+    Post updatePost(@PathVariable String postId, @RequestBody Post postDetail) throws Exception {
+        return service.updatePost(postId, postDetail);
+    }
 
+    @DeleteMapping("/post/{postId}")
+    Void deletePost(@PathVariable String postId) throws Exception {
+        service.deletePost(postId);
+        return null;
+    }
 }

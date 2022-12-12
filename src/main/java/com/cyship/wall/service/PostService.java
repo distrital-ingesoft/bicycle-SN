@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,8 +38,13 @@ public class PostService {
         }
         User temp = usrRepository.findById(userId).get();
         long cant = repository.count() + 1;
+        while (!repository.findById(String.valueOf(cant)).isEmpty()){
+            cant = cant + 1;
+        }
         post.setUser(temp);
         post.setPostId(String.valueOf(cant));
+        post.setHour(LocalTime.now());
+        post.setDate(Date.valueOf(LocalDate.now()));
         try {
             repository.save(post);
         }catch (Exception e){
@@ -66,7 +74,6 @@ public class PostService {
         return repository.findByUser(temp);
     }
 
-
     public List<Post> findPosts(String keyword) throws Exception {
         List<String> users = repositoryImpl.findByKeyword(keyword);
         List<Post> posts = new ArrayList<>();
@@ -76,5 +83,23 @@ public class PostService {
         }
 
         return posts;
+    }
+
+    public Post updatePost(String postId, Post postDetail) throws Exception {
+        Post oldPost = getPost(postId);
+        if (postDetail.getTitle() != null){
+            oldPost.setTitle(postDetail.getTitle());
+        }
+        if (postDetail.getMessage() != null){
+            oldPost.setMessage(postDetail.getMessage());
+        }
+        repository.save(oldPost);
+        return oldPost;
+
+    }
+
+    public void deletePost(String postId) throws Exception {
+        Post post = getPost(postId);
+        repository.delete(post);
     }
 }

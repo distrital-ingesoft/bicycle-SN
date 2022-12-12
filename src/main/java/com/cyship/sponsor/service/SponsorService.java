@@ -35,8 +35,11 @@ public class SponsorService {
         }
         User temp = userRepository.findById(userId).get();
         sponsor.setUser(temp);
-        String cant = String.valueOf((repository.count() + 1));
-        sponsor.setId(cant);
+        long cant = (repository.count() + 1);
+        while (!repository.findById(String.valueOf(cant)).isEmpty()){
+            cant = cant + 1;
+        }
+        sponsor.setId(String.valueOf(cant));
 
         repository.save(sponsor);
         return sponsor;
@@ -62,5 +65,29 @@ public class SponsorService {
             throw new Exception("El sponsor no se encontro");
         }
         return op.get();
+    }
+
+    public Sponsor updateSponsor(String userId, Sponsor newSponsor) throws Exception {
+        Sponsor oldSponsor = getSponsor(userId);
+
+        if (newSponsor.getName() != null){
+            oldSponsor.setName(newSponsor.getName());
+        }
+        if (newSponsor.getType() != null){
+            oldSponsor.setType(newSponsor.getType());
+        }
+        repository.save(oldSponsor);
+        return oldSponsor;
+    }
+
+    public boolean deleteSponsor(String sponsorId) throws Exception {
+        try {
+            Sponsor sponsor = getSponsor(sponsorId);
+            repository.delete(sponsor);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+
     }
 }

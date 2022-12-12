@@ -34,4 +34,17 @@ public class SponsorController {
             return null;
         }
     }
+    @PutMapping(value = "/sponsor/{sponsorId}")
+    Sponsor updateSponsor(@RequestBody Sponsor newSponsor, @PathVariable String sponsorId) throws Exception {
+        return service.updateSponsor(sponsorId, newSponsor);
+    }
+    @DeleteMapping(value = "/sponsor/{sponsorId}")
+    Boolean deleteSponsor(@PathVariable String sponsorId){
+        try{
+            service.deleteSponsor(sponsorId);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

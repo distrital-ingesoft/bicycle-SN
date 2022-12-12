@@ -4,10 +4,10 @@ import com.cyship.sponsor.model.Award;
 import com.cyship.sponsor.service.AwardService;
 import com.cyship.wall.model.Post;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.repository.query.Param;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class AwardController {
@@ -22,6 +22,24 @@ public class AwardController {
             System.out.println(e);
             return null;
         }
-
+    }
+    @GetMapping(value = "/award")
+    List<Award> listAwards(@RequestParam(required = false) String keyword){
+        try {
+            return(keyword == null || keyword .length()==0)?
+                    service.getAll():
+                    service.findAwards(keyword);
+        }
+        catch (Exception e){
+            return null;
+        }
+    }
+    @PutMapping(value = "/award/{awardId}")
+    Award updateAward(@PathVariable String awardId, @RequestBody Award newAward) throws Exception {
+        return service.updateAward(awardId, newAward);
+    }
+    @DeleteMapping(value = "/award/{awardId}")
+    boolean deleteAward(@PathVariable String awardId) throws Exception {
+        return service.deleteAward(awardId);
     }
 }

@@ -1,6 +1,5 @@
-package com.cyship.wall.repository;
+package com.cyship.sponsor.repository;
 
-import com.cyship.wall.model.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +8,7 @@ import javax.persistence.Query;
 import java.util.List;
 
 @Component
-public class PostRepositoryImpl {
+public class AwardRepositoryImpl {
 
     @Autowired
     EntityManager em;
@@ -17,10 +16,10 @@ public class PostRepositoryImpl {
 
     public List<String> findByKeyword(String keyword) {
         try {
-            String query = "SELECT p.postId "+
-                    "FROM User u JOIN Post p ON p.user = u " +
-                    "WHERE u.userId like ?1 OR u.email like ?1 OR "+
-                    "(p.message like ?1 or p.title like ?1) ";
+            String query = "SELECT a.id "+
+                    "FROM Sponsor s JOIN Award a ON a.sponsor = s " +
+                    "WHERE s.name like ?1 OR s.type like ?1 OR "+
+                    "(a.description like ?1 or a.type like ?1) ";
             Query queryJpa =  em.createQuery(query);
             queryJpa.setParameter(1, "%" + keyword + "%");
             return queryJpa.getResultList();
