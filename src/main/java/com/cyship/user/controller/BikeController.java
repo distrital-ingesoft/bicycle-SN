@@ -12,6 +12,7 @@ public class BikeController {
     @Autowired
     BikeService service;
 
+    //Cambiar ruta /user/bike
     @PostMapping(value = "/Bike/{userId}")
     Bike createBike(@RequestBody Bike bike, @PathVariable String userId){
         return service.createBike(bike,userId);

@@ -25,7 +25,6 @@ public class PostRepositoryImpl {
             queryJpa.setParameter(1, "%" + keyword + "%");
             return queryJpa.getResultList();
         }catch (Exception e){
-            System.out.println(e);
             return null;
         }
 

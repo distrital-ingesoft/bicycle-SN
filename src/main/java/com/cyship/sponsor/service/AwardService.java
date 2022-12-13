@@ -70,7 +70,6 @@ public class AwardService {
 
     public Award updateAward(String awardId, Award newAward) throws Exception {
         Award oldAward = getAward(awardId);
-
         if(newAward.getType() != null){
             oldAward.setType(newAward.getType());
         }

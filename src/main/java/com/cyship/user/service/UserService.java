@@ -22,12 +22,10 @@ public class UserService {
     ProfileRepositoryImpl profileRepository;
     public User createAccount(User user) throws Exception {
         if(!repository.findById(user.getUserId()).isEmpty()){
-            System.out.println("Usuario duplicado");
             throw new Exception("El nombre de usuario ya se encuentra registrado");
         }
 
         if(!repository.findByEmail(user.getEmail()).isEmpty()){
-            System.out.printf("Email duplicado");
             throw new Exception("El nombre de usuario ya se encuentra registrado");
         }
         repository.save(user);

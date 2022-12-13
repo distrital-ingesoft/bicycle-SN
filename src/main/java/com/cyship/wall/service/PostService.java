@@ -29,15 +29,27 @@ public class PostService {
     @Autowired
     PostRepositoryImpl repositoryImpl;
 
+    /**
+     * Creacion del post
+     * @param userId Id del usuario dueño del post
+     * @param post Datos del post
+     * @return
+     * @throws Exception
+     */
     public Post createPost(String userId, Post post) throws Exception{
+        // Se comprueba que exista el usuario
         if(usrRepository.findById(userId).isEmpty()){
             throw new Exception("Usuario no encontrado");
         }
+        //Se comprueba que el post tenga titulo y contenido
         if(post.getMessage() == null || post.getTitle() == null){
             throw new Exception("Post sin mensaje");
         }
+        //Se recupera el usuario
         User temp = usrRepository.findById(userId).get();
+        //Se mira cuantos post existen para asignar el id.
         long cant = repository.count() + 1;
+        //Cuando se borra un post, se altera un poco el orden de los IDS, por lo que se comprueba que el Id no esté siendo usado
         while (!repository.findById(String.valueOf(cant)).isEmpty()){
             cant = cant + 1;
         }
@@ -48,11 +60,16 @@ public class PostService {
         try {
             repository.save(post);
         }catch (Exception e){
-            System.out.println(e);
         }
         return post;
     }
 
+    /**
+     * Método para recuperar un post especifico
+     * @param postId Id del post a buscar
+     * @return
+     * @throws Exception
+     */
     public Post getPost(String postId) throws Exception{
         Optional<Post> op = repository.findById(postId);
         if(op.isEmpty()){
@@ -66,6 +83,12 @@ public class PostService {
         return repository.findAll();
     }
 
+    /**
+     * Metodo que entrega todos los post de un usuario en especifico
+     * @param userId Id del usuario del cual se quieren los post
+     * @return
+     * @throws Exception
+     */
     public List<Post> getUserPost(String userId) throws Exception{
         if(usrRepository.findById(userId).isEmpty()){
             throw new Exception("Usuario no encontrado");
@@ -74,10 +97,15 @@ public class PostService {
         return repository.findByUser(temp);
     }
 
+    /**
+     * Buscar post por una llave particular (en su titulo o contenido)
+     * @param keyword
+     * @return
+     * @throws Exception
+     */
     public List<Post> findPosts(String keyword) throws Exception {
         List<String> users = repositoryImpl.findByKeyword(keyword);
         List<Post> posts = new ArrayList<>();
-        System.out.println("Post recuperados" + users.size());
         for(int x = 0 ; x<users.size(); x++){
             posts.add(getPost(users.get(x)));
         }
@@ -85,6 +113,13 @@ public class PostService {
         return posts;
     }
 
+    /**
+     * Metodo para editar el post
+     * @param postId Id del post a editar
+     * @param postDetail Informacion nueva que irá al post
+     * @return
+     * @throws Exception
+     */
     public Post updatePost(String postId, Post postDetail) throws Exception {
         Post oldPost = getPost(postId);
         if (postDetail.getTitle() != null){
@@ -98,6 +133,11 @@ public class PostService {
 
     }
 
+    /**
+     * Metodo para eliminar un post
+     * @param postId Id del post a borrar
+     * @throws Exception
+     */
     public void deletePost(String postId) throws Exception {
         Post post = getPost(postId);
         repository.delete(post);
