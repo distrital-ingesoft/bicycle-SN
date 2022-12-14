@@ -54,7 +54,7 @@ public class PostController {
     @GetMapping("/wall/{userId}")
     List<Post> getWall(@PathVariable String userId){
         try {
-            return service.getUserPost(userId);
+            return service.getUserPosts(userId);
         }catch(Exception e){
             return null;
         }

@@ -22,10 +22,12 @@ public class UserService {
     ProfileRepositoryImpl profileRepository;
     public User createAccount(User user) throws Exception {
         if(!repository.findById(user.getUserId()).isEmpty()){
+            System.out.println("ID YA REGISTRADO");
             throw new Exception("El nombre de usuario ya se encuentra registrado");
         }
 
         if(!repository.findByEmail(user.getEmail()).isEmpty()){
+            System.out.println("E-MAIL YA REGISTRADO");
             throw new Exception("El nombre de usuario ya se encuentra registrado");
         }
         repository.save(user);

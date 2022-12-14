@@ -18,11 +18,12 @@ public class UserController {
     UserService service;
 
     @PostMapping(value = "/user", consumes = {"application/json"})
-    User createAccount(@RequestBody User user){
+    String createAccount(@RequestBody User user){
         try {
-            return service.createAccount(user);
+            service.createAccount(user);
+            return "Creado el usuario con el Email" + user.getEmail();
         }catch(Exception e){
-            return null;
+            return "El usauario no se ha podido crear";
         }
     }
 

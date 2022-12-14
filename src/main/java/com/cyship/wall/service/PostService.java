@@ -89,7 +89,7 @@ public class PostService {
      * @return
      * @throws Exception
      */
-    public List<Post> getUserPost(String userId) throws Exception{
+    public List<Post> getUserPosts(String userId) throws Exception{
         if(usrRepository.findById(userId).isEmpty()){
             throw new Exception("Usuario no encontrado");
         }
