@@ -1,10 +1,12 @@
 package com.cyship.user.service;
 
+import com.cyship.user.exception.ResourceAlreadyRegistredException;
 import com.cyship.user.model.Friendship;
 import com.cyship.user.model.User;
 import com.cyship.user.model.Profile;
 import com.cyship.user.repository.UserRepository;
 import com.cyship.user.repository.ProfileRepositoryImpl;
+import com.cyship.user.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,7 @@ public class UserService {
     ProfileRepositoryImpl profileRepository;
     public User createAccount(User user) throws Exception {
         if(!repository.findById(user.getUserId()).isEmpty()){
+<<<<<<< HEAD
             System.out.println("ID YA REGISTRADO");
             throw new Exception("El nombre de usuario ya se encuentra registrado");
         }
@@ -29,12 +32,19 @@ public class UserService {
         if(!repository.findByEmail(user.getEmail()).isEmpty()){
             System.out.println("E-MAIL YA REGISTRADO");
             throw new Exception("El nombre de usuario ya se encuentra registrado");
+=======
+            throw new ResourceAlreadyRegistredException("El nombre de usuario ya se encuentra registrado");
+        }
+
+        if(!repository.findByEmail(user.getEmail()).isEmpty()){
+            throw new ResourceAlreadyRegistredException("El nombre de usuario ya se encuentra registrado");
+>>>>>>> 397635c64afeeaad07882ad8aeddef9d51bade65
         }
         repository.save(user);
         return user;
     }
 
-    public Profile updateProfile(String userId, Profile profile) throws Exception {
+    public Profile updateProfile(String userId, Profile profile) throws ResourceNotFoundException {
         User user = getUser(userId);
         user.setProfile(profile);
         repository.save(user);
@@ -43,16 +53,15 @@ public class UserService {
 
     }
 
-    private User getUser(String userId) throws Exception {
+    private User getUser(String userId) throws ResourceNotFoundException {
         Optional<User> op = repository.findById(userId);
         if(op.isEmpty()){
-            throw new Exception("El usuario no se encuentra registrado");
+            throw new ResourceNotFoundException("El usuario no se encuentra registrado");
         }
-        User user = op.get();
-        return user;
+        return op.get();
     }
 
-    public Profile getProfile(String userId) throws Exception {
+    public Profile getProfile(String userId) throws ResourceNotFoundException {
         User user = getUser(userId);
         return user.getProfile();
     }
@@ -62,7 +71,7 @@ public class UserService {
     }
 
 
-    public void follow(String userId, String targetUserId) throws Exception {
+    public void follow(String userId, String targetUserId) throws ResourceNotFoundException {
         User user = getUser(userId);
         User targetUser = getUser(targetUserId);
         if(userIsNotLocked(userId, targetUser)){
@@ -71,7 +80,7 @@ public class UserService {
         }
     }
 
-    public void requestFriendship(String userId, String targetUserId) throws Exception {
+    public void requestFriendship(String userId, String targetUserId) throws ResourceNotFoundException {
         User user = getUser(userId);
         User targetUser = getUser(targetUserId);
         if(userIsNotLocked(userId, targetUser) && !getUserPreviousFriendshipRequest( user, targetUserId)){
@@ -90,13 +99,12 @@ public class UserService {
         return user.getRequestedFriendships().stream().anyMatch(friendship -> friendship.getRecipient().getUserId().equals(targetUserId));
     }
 
-    private static Optional<Friendship> getTargetUserPreviousFriendshipRequest(User userId, User targetUser) {
-        Optional<Friendship> opt = targetUser.
+    private static Optional<Friendship> getTargetUserPreviousFriendshipRequest(User user, User targetUser) {
+        return targetUser.
                 getRequestedFriendships().
                 stream().
-                filter(friendship -> friendship.getRecipient().getUserId().equals(userId)).
+                filter(friendship -> friendship.getRecipient().getUserId().equals(user.getUserId())).
                 findAny();
-        return opt;
     }
 
     private static boolean userIsNotLocked(String userId, User targetUser) {
@@ -109,12 +117,12 @@ public class UserService {
     }
 
 
-    public void acceptFriendship(String userId, String targetUserId) throws Exception {
+    public void acceptFriendship(String userId, String targetUserId) throws ResourceNotFoundException {
         User user = getUser(userId);
         User targetUser = getUser(targetUserId);
         Optional<Friendship> targetUserRequest = getTargetUserPreviousFriendshipRequest(user, targetUser);
         if(!targetUserRequest.isEmpty()){
-            throw new Exception("No se encontró solicitud previa de amistad");
+            throw new ResourceNotFoundException("No se encontró solicitud previa de amistad");
         }
         targetUserRequest.get().setAccepted(true);
         repository.save(user);

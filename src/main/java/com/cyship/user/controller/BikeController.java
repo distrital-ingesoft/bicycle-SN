@@ -12,13 +12,12 @@ public class BikeController {
     @Autowired
     BikeService service;
 
-    //Cambiar ruta /user/bike
-    @PostMapping(value = "/Bike/{userId}")
+    @PostMapping(value = "/user/{userId}/bike")
     Bike createBike(@RequestBody Bike bike, @PathVariable String userId){
         return service.createBike(bike,userId);
     }
 
-    @GetMapping(value = "/Bike")
+    @GetMapping(value = "/bike")
     List<Bike> showBikes(@RequestParam(required = false) String keyword){
         try {
             return(keyword == null || keyword .length()==0)?

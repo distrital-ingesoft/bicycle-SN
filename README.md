@@ -8,6 +8,5 @@ Red social para ciclistas en donde tendrán la posibilidad de crear perfiles, a�
 - Diana Valentina Uscategui Tobo
 - Kevin Andrés Borda Penagos
 - Hector Hernando Villa Vargas
-- Mauricio Gonzalez Buitrago
 
 
