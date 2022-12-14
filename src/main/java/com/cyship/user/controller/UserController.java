@@ -1,6 +1,7 @@
 package com.cyship.user.controller;
 
 import com.cyship.user.dto.ProfileRelationship;
+import com.cyship.user.exception.ResourceNotFoundException;
 import com.cyship.user.model.User;
 import com.cyship.user.model.Profile;
 import com.cyship.user.service.UserService;
@@ -30,7 +31,7 @@ public class UserController {
     List<String> getUsers(@RequestParam(required = false) String keyword){
         try {
             return(keyword == null || keyword .length()==0)?
-                    service.getAll().stream().map(user -> user.getUserId()).collect(Collectors.toList()):
+                    service.getAll().stream().map(User::getUserId).collect(Collectors.toList()):
                     service.findProfiles(keyword);
         }catch(Exception e){
             return null;
@@ -38,45 +39,25 @@ public class UserController {
     }
 
     @PostMapping("/user/{userId}/profile")
-    Profile updateProfile(@RequestBody Profile profile, @PathVariable String userId){
-        try {
-            return service.updateProfile(userId, profile);
-        }catch(Exception e){
-            return null;
-        }
+    Profile updateProfile(@RequestBody Profile profile, @PathVariable String userId) throws ResourceNotFoundException {
+           return service.updateProfile(userId, profile);
     }
 
     @GetMapping("/user/{userId}/profile")
-    Profile consultProfiles(@PathVariable String userId){
-        try {
-            return service.getProfile(userId);
-        }catch(Exception e){
-            return null;
-        }
+    Profile consultProfile(@PathVariable String userId) throws ResourceNotFoundException {
+        return service.getProfile(userId);
     }
 
     @PostMapping("/user/{userId}/profile/follow/{targetUserId}")
-    void follow(@PathVariable String userId,  @PathVariable String targetUserId){
-        try {
-            service.follow(userId, targetUserId);
-        }catch(Exception e){
-            return ;
-        }
+    void follow(@PathVariable String userId,  @PathVariable String targetUserId) throws ResourceNotFoundException {
+        service.follow(userId, targetUserId);
     }
     @PostMapping("/friendship")
-    void addFriend(@RequestBody ProfileRelationship relationship){
-        try {
-            service.requestFriendship(relationship.getSourceAccount(), relationship.getTargetAccount());
-        }catch(Exception e){
-            return ;
-        }
+    void addFriend(@RequestBody ProfileRelationship relationship) throws ResourceNotFoundException {
+        service.requestFriendship(relationship.getSourceAccount(), relationship.getTargetAccount());
     }
     @PutMapping("/friendship")
-    void acceptFriend(@RequestBody ProfileRelationship relationship){
-        try {
-            service.acceptFriendship(relationship.getSourceAccount(), relationship.getTargetAccount());
-        }catch(Exception e){
-            return ;
-        }
+    void acceptFriend(@RequestBody ProfileRelationship relationship) throws ResourceNotFoundException {
+        service.acceptFriendship(relationship.getSourceAccount(), relationship.getTargetAccount());
     }
 }
