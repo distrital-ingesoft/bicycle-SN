@@ -52,6 +52,7 @@ public class UserController {
     @PostMapping("/user/{userId}/profile/follow/{targetUserId}")
     void follow(@PathVariable String userId,  @PathVariable String targetUserId) throws ResourceNotFoundException {
         service.follow(userId, targetUserId);
+        System.out.println("Usuario " + userId + " sigue a usuario " +targetUserId);
     }
     @PostMapping("/friendship")
     void addFriend(@RequestBody ProfileRelationship relationship) throws ResourceNotFoundException {

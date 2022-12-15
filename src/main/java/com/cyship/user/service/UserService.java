@@ -24,7 +24,6 @@ public class UserService {
     ProfileRepositoryImpl profileRepository;
     public User createAccount(User user) throws Exception {
         if(!repository.findById(user.getUserId()).isEmpty()){
-<<<<<<< HEAD
             System.out.println("ID YA REGISTRADO");
             throw new Exception("El nombre de usuario ya se encuentra registrado");
         }
@@ -32,13 +31,7 @@ public class UserService {
         if(!repository.findByEmail(user.getEmail()).isEmpty()){
             System.out.println("E-MAIL YA REGISTRADO");
             throw new Exception("El nombre de usuario ya se encuentra registrado");
-=======
-            throw new ResourceAlreadyRegistredException("El nombre de usuario ya se encuentra registrado");
-        }
 
-        if(!repository.findByEmail(user.getEmail()).isEmpty()){
-            throw new ResourceAlreadyRegistredException("El nombre de usuario ya se encuentra registrado");
->>>>>>> 397635c64afeeaad07882ad8aeddef9d51bade65
         }
         repository.save(user);
         return user;
